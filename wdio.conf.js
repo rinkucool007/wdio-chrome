@@ -13,16 +13,22 @@ export const config = {
       ]
     }
   }],
-  services: [], // Do not include 'chromedriver' service
-  // Specify ChromeDriver path explicitly
-  chromeDriver: {
-    binary: process.env.CHROMEDRIVER_PATH || '/usr/local/bin/chromedriver'
-  },
+  services: [], // Explicitly disable all services, including 'chromedriver'
+  // Specify ChromeDriver custom path
+  chromedriverCustomPath: process.env.CHROMEDRIVER_PATH || '/usr/local/bin/chromedriver',
   logLevel: 'info',
   framework: 'mocha',
   reporters: ['spec'],
   mochaOpts: {
     ui: 'bdd',
     timeout: 60000
+  },
+  // Debug ChromeDriver path in onPrepare hook
+  onPrepare: function (config, capabilities) {
+    const path = require('path');
+    const fs = require('fs');
+    const driverPath = process.env.CHROMEDRIVER_PATH || '/usr/local/bin/chromedriver';
+    console.log('ChromeDriver path:', driverPath);
+    console.log('File exists:', fs.existsSync(driverPath));
   }
 };
