@@ -45,6 +45,15 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') \
     && rm chromedriver_linux64.zip \
     && chmod +x /usr/local/bin/chromedriver
 
+# Copy local ChromeDriver binary from ./chromeTest to container
+COPY ./chromeTest/chromedriver /usr/local/bin/chromedriver
+RUN chmod +x /usr/local/bin/chromedriver \
+    && ls -l /usr/local/bin/chromedriver # Verify binary exists
+
+# Set environment variable for ChromeDriver
+ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+
+
 # Set working directory
 WORKDIR /app
 
